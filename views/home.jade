@@ -1,7 +1,7 @@
 doctype HTML
 html
     head
-        title Gifty
+        title Reignite
 
         link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/nano.min.css')
         link(href="/inc/css/app.css", rel="stylesheet")
@@ -31,10 +31,11 @@ html
             firebase.analytics();
             var db = firebase.firestore();
 
-
     body
         .t
             .tc
+                h1 Local Gift Card
+                h2 Help reignite your small business by letting users send gift cards for your store.
                 .social-login#google(onclick='GoogleLogin();')
                     span Login with Google
                 br
@@ -54,14 +55,14 @@ html
                 div path
                 input(onkeyup="app.business.validate();", disabled).path
                 br
-                div merchant
-                input(onkeyup="app.business.validate();").merchant
+                div website
+                input(onblur="app.business.website();").website
                 br
                 div color
                 span.color
                 span.color-hex #color
                 br
-                button Create
+                button Continue
                 br
                 .validate
                 br
@@ -70,7 +71,7 @@ html
                 br
                 input(placeholder='http://www.test.com').link
                 br
-                button Copy Link
+                button(onclick="app.copy();") Copy Link
                 br
                 pre
                     code.

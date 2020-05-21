@@ -1,5 +1,5 @@
 * { margin: 0px; padding: 0px; font-family: arial; }
-html, body { width: 100%; height: 100%; background: rgb(100, 100, 100); }
+html, body { width: 100%; height: 100%; background: #D9E3EC; }
 
 .t { display: table; width: 100%; height: 100%; }
     .tc { display: table-cell; width: 100%; height: 100%; vertical-align: middle; }
@@ -9,3 +9,71 @@ html, body { width: 100%; height: 100%; background: rgb(100, 100, 100); }
 
 .image { width: 200px; height: 200px; background: #eee; border-radius: 20px; overflow: hidden; }
     .image img { width: 100%; height: 100%; }
+
+
+.left { width: 60%; height: 100%; position: relative; top: 0px; left: 0px; overflow-y: auto; }
+    .spacer { width: 100%; height: 80px; }
+
+    .business-wrapper { width: 70%; max-width: 400px; margin: 0px auto; padding: 30px; border-radius: 4px; background-color: #fff; }
+    .recepient { width: 100%; border-bottom: 1px solid #345AE3; margin-bottom: 20px;}
+        .recepient-amount-list { position: relative; margin-bottom: 20px; }
+            .recepient-amount-list-item { position: relative; display: inline-block; width: calc(18% - 2px); margin: 0px 1%; border: 1px solid rgb(223, 227, 236); height: 60px; text-align: center; border-radius: 4px; cursor: pointer; background: rgb(243, 246, 252); }
+                .recepient-amount-list-item span { position: relative; top: 21px; color: rgb(92, 97, 128); font-family: 'Barlow'; font-weight: 500; }
+                .recepient-amount-list-item.selected { border-color: #345AE3; background: #345AE3; }
+                    .recepient-amount-list-item.selected span { color: #fff; }
+    .business { text-align: center; margin-bottom: 20px; }
+        .business-logo { position: relative; width: 120px; height: 120px; margin: 0px auto; margin-top: -75px; margin-bottom: 10px; border-radius: 100px; background: rgb(188, 191, 197); overflow: hidden; border: 10px solid #fff;}
+            .business-logo img { width: 100%; height: 100%; }
+        .business-name { position: relative; font-size: 30px; color: #000; margin-bottom: 5px; }
+        .business-link { display: inline-block; position: relative; font-size: 13px; color: #09f; text-decoration: none; margin-bottom: 15px; }
+        .business.congrats .business-logo { width: 100px; height: 100px; margin-top: -70px; }
+        .business.congrats .business-name { font-size: 24px; }
+
+    .payment { margin-bottom: 20px; }
+
+    .order { display: block; background: #345AE3; width: 100%; height: 50px; border-radius: 4px; text-align: center; text-decoration: none; }
+        .order span { position: relative; top: 16px; color: #fff; }
+        .input-wrapper { width: 100%; height: 75px; margin-bottom: 15px; }
+            .input-wrapper-exp { display: inline-block; width: 25%; margin-right: 5%; }
+            .input-wrapper-cvv { display: inline-block; width: 25%; margin-right: 5%; }
+            .input-wrapper-zip { display: inline-block; width: 40%; }
+            .input-label { position: relative; font-weight: bold; font-size: 12px; margin-bottom: 10px; color: #777; }
+            .input-wrapper input { border: 1px solid #ddd; font-size: 15px; padding: 15px 15px; width: calc(100% - 32px); color: #345AE3; transition: .3s; font-family: 'Barlow'; font-weight: 500; background: #fff; }
+                .input-wrapper input:focus { border-color: #345AE3; outline: none; background: rgb(244, 246, 250); }
+                .input-wrapper input::placeholder { color: #aaa; }
+
+    .greeting { font-family: 'Barlow'; font-size: 16px; font-weight: 500; margin-bottom: 30px; }
+
+    .card { position: relative; width: 100%; margin: 0px auto; height: 250px; border-radius: 15px; margin-bottom: 20px; font-family: 'Barlow'; background:linear-gradient(135deg, #C56CD6 0%,#3425AF 100%); box-shadow: 0px 0px 20px rgba(0,0,0,.25); z-index: 10; }
+        .rotate { animation: rotation .6s;  animation-iteration-count: once; }
+        .card * { font-family: 'Barlow'; letter-spacing: 3px; color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,.5); }
+        .card-amount { position: absolute; display: inline-block; top: 20px; right: 25px; font-size: 34px; font-family: 'Barlow'; text-align: right; }
+        .card-label { position: absolute; display: inline-block; top: 30px; left: 10%; font-size: 14px; font-family: 'Barlow'; }
+        .card-number { position: absolute; display: inline-block; top: 100px; letter-spacing: 4px; left: 10%; font-size: 24px; font-family: 'Barlow'; }
+        .card-name { position: absolute; display: inline-block; top: 135px; left: 10%; font-size: 20px;  font-family: 'Barlow'; }
+        .card-exp-label { position: absolute; display: inline-block; left: 10%; top: 200px; font-size: 15px; }
+        .card-cvv-label { position: absolute; display: inline-block; left: calc(10% + 130px); top: 200px; font-size: 15px; }
+        .card-exp { position: absolute; display: inline-block; left: calc(10% + 50px); top: 199px; font-size: 17px; }
+        .card-cvv { position: absolute; display: inline-block; left: calc(10% + 180px); top: 199px; font-size: 17px; }
+        .card-chip { right: 25px; top: 160px; width: 60px; position: absolute; }
+        .noshadow { text-shadow: none; opacity: .7; }
+
+    .card-options { width: 100%; height: 25px; margin-bottom: 40px; }
+        .toggle { position: relative; display: inline-block; width: 40px; height: 24px; margin-right: 10px;; }
+            .toggle input { opacity: 0; width: 0; height: 0; }
+            .circle { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; -webkit-transition: .4s; transition: .4s; border-radius: 20px; }
+                .circle:before { position: absolute; content: ""; height: 16px; width: 16px; left: 4px; bottom: 4px; background-color: white; -webkit-transition: .4s; transition: .4s; border-radius: 20px;; }
+            input:checked + .circle { background-color: #345AE3; }
+            input:focus + .circle { box-shadow: 0 0 1px #345AE3; }
+            input:checked + .circle:before { -webkit-transform: translateX(16px); -ms-transform: translateX(16px); transform: translateX(16px); }
+        .card-options-label { position: relative; top: 3px; font-size: 12px; color: #888; }
+          
+    .powered { width: 80%; margin: 0px auto; text-align: center; margin-top: 30px; }
+        .poweredby { font-size: 12px; color: rgb(164, 171, 179); margin-bottom: 10px;}
+        .powered img { width: 80px; }
+.right { width: 40%; height: 100%; position: absolute; top: 0px; left: 60%; }
+    #map { width: 100%; height: 100%; }
+
+
+
+@keyframes rotation { 0% { transform: rotate(0deg); } 30% { transform: rotate(-5deg); } 60% { transform: rotate(5deg); } 100% { transform: rotate(0deg); } }

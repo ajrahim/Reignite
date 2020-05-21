@@ -3,12 +3,15 @@
 var uid;
 
 var app = {
+    
+    domain : "https://hellogifty.herokuapp.com/",
+
     document : {
         id : null,
         image : null,
         name : null,
         path : null,
-        merchant : null,
+        website : null,
         color : null,
         website : null
     },
@@ -25,7 +28,7 @@ var app = {
                         logo: "",
                         name : "",
                         path : "",
-                        merchant : "",
+                        website : "",
                         color : "",
                         website : ""
                     }).then(function(docRef) {
@@ -40,7 +43,7 @@ var app = {
                         app.document.id = doc.id;
                         app.document.logo = doc.data().logo;
                         app.document.name = doc.data().name;
-                        app.document.merchant = doc.data().merchant;
+                        app.document.website = doc.data().website;
                         app.document.path = doc.data().path;
                         app.document.color = doc.data().color;
                         app.document.website = doc.data().website;
@@ -60,6 +63,11 @@ var app = {
             app.business.validate();
         },
 
+        website : function(){
+            app.document.website = $('.website').val();
+            app.business.update({website : app.document.website});
+        },
+
         validate : function(){
             var pathsimple = $(".path").val().replace(/([,.€])+/g, '');
             $(".path").val(pathsimple.replace(/\s+/g, '-').toLowerCase());
@@ -69,8 +77,8 @@ var app = {
                 if(available){
                     app.document.path = $('.path').val();
                     app.document.name = $('.business').val();
-                    app.document.merchant = $('.merchant').val();
-                    app.business.update({name : app.document.name, merchant : app.document.merchant, path: app.document.path});
+                    app.document.website = $('.website').val();
+                    app.business.update({name : app.document.name, website : app.document.website, path: app.document.path});
                 }else{
                     app.business.path("-" + S4() + "-" + S4());
                 }
@@ -107,10 +115,17 @@ var app = {
     display : function(){
         $('.business').val(app.document.name);
         $('.path').val(app.document.path);
-        $('.merchant').val(app.document.merchant);
+        $('.website').val(app.document.website);
         $(".image").html("<img src='" + app.document.logo + "' />");
         $(".color-hex").html(app.document.color);
         pickr.setColor(app.document.color, false);
+        $(".link").val(app.domain + app.document.path);
+    },
+
+    copy : function(){
+        $(".link").select();
+        document.execCommand("copy");
+        alert("Copied URL");
     }
 
 };
