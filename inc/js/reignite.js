@@ -1,6 +1,6 @@
 var Reignite=Reignite||(function () {
 
-    var BaseURL = "https://hellogifty.herokuapp.com/";
+    var BaseURL = "https://hellogifty.herokuapp.com";
 
     var GenerateHTML = function(url){
         var reignite_html = `
