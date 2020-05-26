@@ -5,7 +5,7 @@ var map = new mapboxgl.Map({
 
 var business = {
     init : function(){
-        new Cleave('.payment-currency', { creditCard: true, });
+        new Cleave('.payment-number', { creditCard: true, });
         new Cleave('.payment-expiration', { date: true, datePattern: ['m', 'y'] });
         business.amount.set(15);
     },
@@ -19,11 +19,42 @@ var business = {
         },
 
         custom : function(){
-            $(".recepient-amount").val(0);
+            $(".recepient-amount").val("");
             $(".recepient-amount-list-item").removeClass("selected");
             $("#amount-other").addClass("selected");
             $(".input-wrapper-amount").show();
         }
+    },
+
+    purchase : function(){
+        $.post( "/create/card", {
+            business : business_id, 
+            recepient_name : $(".recepient-name").val(),
+            recepient_email : $(".recepient-email").val(),
+            sender : $(".payment-name").val(), 
+            expiration : $(".payment-expiration").val(),
+            cvv : $(".payment-cvv").val(),
+            number : $(".payment-number").val(), 
+            zip : $(".payment-zip").val(),
+            amount: parseInt($(".recepient-amount").val())
+        }, function( data ) {
+            if(data.error){
+                alert("Please Try Again!");
+            }else{
+                alert("Successfully Sent.");
+
+                $(".recepient-name").val("");
+                $(".recepient-email").val("");
+                $(".payment-name").val("");
+                $(".payment-email").val("");
+                $(".payment-expiration").val("");
+                $(".payment-cvv").val("");
+                $(".payment-number").val("");
+                $(".payment-zip").val("");
+                $(".recepient-amount").val("");
+            }
+        });
+        
     },
 
     card : {
@@ -40,6 +71,15 @@ var business = {
         toggle : function(){
             ($("input[type='checkbox']").is(":checked")) ? business.card.show() : business.card.hide();
         }
+    },
+
+    geocode : function(location){
+        $.get("https://api.mapbox.com/geocoding/v5/mapbox.places/" + location + ".json?access_token=pk.eyJ1IjoiYWpyYWhpbSIsImEiOiJja2FhcmszaTcwbnZoMnNyeTN4Mnpmc3E4In0.b7_QRUbfBsy5nLP3tgtE1A", function(data){
+            var el = document.createElement('div');
+            el.className = 'marker';
+            new mapboxgl.Marker(el).setLngLat(data.features[0].center).addTo(map);
+            map.flyTo({ center: data.features[0].center, zoom: 15 });
+        });
     }
 
 }

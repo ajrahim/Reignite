@@ -3,6 +3,7 @@ html
     head
         title Reignite
         meta(name='viewport', content='width=device-width, initial-scale=1')
+        link(href='https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap', rel='stylesheet')
         link(href='https://fonts.googleapis.com/css2?family=Barlow:wght@400;500&display=swap', rel='stylesheet')
         link(rel='stylesheet', href='https://pro.fontawesome.com/releases/v5.10.0/css/all.css', integrity='sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p', crossorigin='anonymous')
         link(href='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css', rel='stylesheet')
@@ -37,9 +38,11 @@ html
                                     span $100
                                 .recepient-amount-list-item#amount-other(onclick='business.amount.custom();')
                                     span Other
+                            .form-spacer
                             .input-wrapper.input-wrapper-amount
                                 .input-label Gift Card Value
-                                input(placeholder="Recepient amount").recepient-amount
+                                .input-icon $
+                                input(placeholder="0").recepient-amount
                             .input-wrapper
                                 .input-label Recepient Name
                                 input(placeholder="Ex. John Smith").recepient-name
@@ -56,7 +59,7 @@ html
                                 input(placeholder="Ex. sender@example.com").payment-email
                             .input-wrapper
                                 .input-label Card Number
-                                input(placeholder="Card Number").payment-currency
+                                input(placeholder="Card Number").payment-number
                             .input-wrapper.input-wrapper-exp
                                 .input-label Expiration
                                 input(placeholder="MM/YY").payment-expiration
@@ -66,12 +69,44 @@ html
                             .input-wrapper.input-wrapper-zip
                                 .input-label Zip Code
                                 input(type='number', maxlength='5', onKeyPress="if(this.value.length==5) return false;", placeholder="Zip Code").payment-zip
-                        .order
+                        .form-spacer
+                        .order(onclick='business.purchase();')
                             span Send Gift Card
+                            b.fas.fa-paper-plane
                     
                     .spacer
+                        .powered
+                            .poweredby Powered by
+                            img(src='/inc/images/logo-minimal.png')
+
         .right 
             #map
         script(src='/inc/js/business.js')
         script.
             business.init();
+            setTimeout(function(){
+                business.geocode("#{data.location}")
+            }, 100);
+            console.log(#{reignite.amount});
+        if (reignite !== undefined)
+            script.
+                switch(parseInt("#{reignite.amount}")){
+                    case 15:
+                        business.amount.set(15);
+                        break;
+                    case 20:
+                        business.amount.set(20);
+                        break;
+                    case 50:
+                        business.amount.set(50);
+                        break;
+                    case 100:
+                        business.amount.set(100);
+                        break;
+                    default:
+                        business.amount.custom();
+                        $(".recepient-amount").val("#{reignite.amount}");
+                        break;
+                }
+                $(".recepient-name").val("#{reignite.name}");
+                $(".recepient-email").val("#{reignite.email}");

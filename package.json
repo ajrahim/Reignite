@@ -6,11 +6,15 @@
     "node": "8.2.1"
   },
   "dependencies": {
+    "@sendgrid/mail": "^7.1.1",
     "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "express": "^4.16.3",
     "firebase-admin": "^5.12.1",
     "https": "^1.0.0",
     "jade": "^1.11.0",
+    "mailgun-js": "^0.22.0",
     "moment": "^2.22.2",
     "pug": "^2.0.4",
     "validator": "^10.4.0"

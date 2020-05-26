@@ -3,6 +3,7 @@ html
     head
         title Reignite
         meta(name='viewport', content='width=device-width, initial-scale=1')
+        link(href='https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap', rel='stylesheet')
         link(href='https://fonts.googleapis.com/css2?family=Barlow:wght@400;500&display=swap', rel='stylesheet')
         link(rel='stylesheet', href='https://pro.fontawesome.com/releases/v5.10.0/css/all.css', integrity='sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p', crossorigin='anonymous')
         link(href='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css', rel='stylesheet')
@@ -13,9 +14,9 @@ html
 
         script. 
             var card = {
-                number : "#{pan.replace(/[^\dA-Z]/g, '').replace(/(.{4})/g, '$1 ').trim()}",
-                expiration : "#{expiration.replace(/[^\dA-Z]/g, '').replace(/(.{2})/, '$1/').trim()}",
-                cvv : "#{cvv_number}"
+                number : "#{card.pan.replace(/[^\dA-Z]/g, '').replace(/(.{4})/g, '$1 ').trim()}",
+                expiration : "#{card.expiration.replace(/[^\dA-Z]/g, '').replace(/(.{2})/, '$1/').trim()}",
+                cvv : "#{card.cvv_number}"
             }
     body
         .left
@@ -25,13 +26,13 @@ html
                     .business-wrapper
                         .business.congrats
                             .business-logo
-                                //- img(src="#{data.logo}")
-                            .business-name Business Name
-                            a.business-link(href='#') https://www.google.com
+                                img(src="#{business.logo}")
+                            .business-name #{business.name}
+                            a.business-link(href='#') #{business.website}
                         
                         .card
                             .card-label.noshadow Gift Card
-                            .card-amount $25 
+                            .card-amount $#{amount} 
                             .card-number 
                             .card-name Lucky Customer
                             .card-exp-label.noshadow Exp
@@ -46,7 +47,7 @@ html
                                 span.circle
                             span.card-options-label Show/Hide Gift Card Details
 
-                        a(href='#').order
+                        a(href='#{business.website}', target='_blank').order
                             span Start Shopping
                     
                     .spacer
@@ -60,6 +61,5 @@ html
         script(src='/inc/js/business.js')
         script.
             business.card.hide();
-            setTimeout(function(){
-                $(".card").addClass("rotate");
-            }, 1000);
+            setTimeout(function(){ business.geocode("#{business.location}") }, 100);
+            setTimeout(function(){ $(".card").addClass("rotate"); }, 1000);

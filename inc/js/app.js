@@ -12,42 +12,37 @@ var app = {
         name : null,
         path : null,
         website : null,
-        color : null,
-        website : null
+        location : null
     },
 
     business : {
+
         init : function(){
 
             db.collection("businesses").where("owner", "==", uid).get().then(function(results) {
 
                 if(results.docs.length == 0){
-                    $(".document").html("EMPTY");
                     db.collection("businesses").add({
                         owner: uid,
                         logo: "",
                         name : "",
                         path : "",
                         website : "",
-                        color : "",
-                        website : ""
+                        location : ""
                     }).then(function(docRef) {
-                        $(".document").html("Here : " + docRef.id);
-                        console.log("Document written with ID: ", docRef.id);
+                        app.business.slide(1);
                     }).catch(function(error) {
-                        console.error("Error adding document: ", error);
                     });
                 }else{
                     results.forEach(function(doc) {
-                        $(".document").html("Here : " + doc.id);
                         app.document.id = doc.id;
                         app.document.logo = doc.data().logo;
                         app.document.name = doc.data().name;
                         app.document.website = doc.data().website;
                         app.document.path = doc.data().path;
-                        app.document.color = doc.data().color;
-                        app.document.website = doc.data().website;
+                        app.document.location = doc.data().location;
                         app.display();
+                        app.business.slide(1);
                     });
                 }
 
@@ -56,16 +51,25 @@ var app = {
             });
         },
 
+        slide : function(index){
+            $(".home-slider").css("left", "-" + (index * 100) + "%")
+        },
+
         path : function(append = ""){
-            var business = $(".business").val();
+            var business = $(".setup-business").val();
             var business_simple = business.replace(/([,.€])+/g, '');
             $(".path").val(business_simple.replace(/\s+/g, '-').toLowerCase() + append);
             app.business.validate();
         },
 
         website : function(){
-            app.document.website = $('.website').val();
+            app.document.website = $(".setup-website").val();
             app.business.update({website : app.document.website});
+        },
+
+        location : function(){
+            app.document.location = $(".setup-location").val();
+            app.business.update({location : app.document.location});
         },
 
         validate : function(){
@@ -76,18 +80,19 @@ var app = {
             app.business.availability($('.path').val(), function(available){
                 if(available){
                     app.document.path = $('.path').val();
-                    app.document.name = $('.business').val();
-                    app.document.website = $('.website').val();
+                    app.document.name = $(".setup-business").val();
+                    app.document.website = $(".setup-website").val();
+                    app.document.location = $(".setup-location").val();
                     app.business.update({name : app.document.name, website : app.document.website, path: app.document.path});
                 }else{
-                    app.business.path("-" + S4() + "-" + S4());
+                    app.business.path("-" + S4());
                 }
             });
         },
 
         availability : function(path, callback){
 
-            db.collection("businesses").where("owner", "==", uid).get().then(function(results) {
+            db.collection("businesses").where("path", "==", path).get().then(function(results) {
 
                 if(results.docs.length == 0){
                     callback(true);
@@ -96,7 +101,7 @@ var app = {
                 }
 
             }).catch(function(error) {
-                callback(false);
+                callback(true);
             });
 
         },
@@ -113,12 +118,11 @@ var app = {
     },
 
     display : function(){
-        $('.business').val(app.document.name);
-        $('.path').val(app.document.path);
-        $('.website').val(app.document.website);
-        $(".image").html("<img src='" + app.document.logo + "' />");
-        $(".color-hex").html(app.document.color);
-        pickr.setColor(app.document.color, false);
+        $(".setup-business").val(app.document.name);
+        $('.path').val(app.domain + app.document.path);
+        $(".setup-website").val(app.document.website);
+        $(".setup-location").val(app.document.location);
+        $(".setup-logo-image").html("<img src='" + app.document.logo + "' />");
         $(".link").val(app.domain + app.document.path);
     },
 
@@ -150,7 +154,7 @@ function GoogleLogin(){
     });
 }
 
-let fileUpload = document.getElementById("logo");
+let fileUpload = document.getElementById("setup-logo");
 
 
 fileUpload.addEventListener('change', function(evt) {
@@ -163,17 +167,17 @@ fileUpload.addEventListener('change', function(evt) {
         app.business.update({ logo : "https://firebasestorage.googleapis.com/v0/b/gifty-63c8e.appspot.com/o/" + id + "_500x500?alt=media" })
     }, 5000);
 })
+
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
         uid = user.uid;
         app.business.init();
     } else {
-        // No user is signed in.
     }
 });
 
 function generate(){
-    var business = $(".business").val();
+    var business = $(".setup-business").val();
     var business_simple = business.replace(/([,.€])+/g, '');
     $(".path").val(business_simple.replace(/\s+/g, '-').toLowerCase());
     validate();
@@ -194,37 +198,5 @@ function ID(){
 
 
 function display(result){
-    $(".image").html("<img src='" + app.document.logo + "' />");
+    $(".setup-logo-image").html("<img src='" + app.document.logo + "' />");
 }
-
-
-const pickr = Pickr.create({
-    el: '.color',
-    theme: 'nano',
-    swatches: [
-        'rgba(244, 67, 54, 1)',
-        'rgba(233, 30, 99, 1)',
-        'rgba(156, 39, 176, 1)',
-        'rgba(103, 58, 183, 1)',
-        'rgba(63, 81, 181, 1)',
-        'rgba(33, 150, 243, 1)',
-        'rgba(3, 169, 244, 1)',
-        'rgba(0, 188, 212, 1)',
-        'rgba(0, 150, 136, 1)',
-        'rgba(76, 175, 80, 1)',
-        'rgba(139, 195, 74, 1)',
-        'rgba(205, 220, 57, 1)',
-        'rgba(255, 235, 59, 1)',
-        'rgba(255, 193, 7, 1)'
-    ],
-    components: {
-        preview: true,
-        hue: true,
-        interaction: {
-            input: true
-        }
-    }
-}).on('changestop', (color, instance) => {
-    app.document.color = color._color.toHEXA().toString();
-    app.business.update({color : app.document.color});
-});

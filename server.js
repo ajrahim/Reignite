@@ -8,11 +8,19 @@
 // ===========================================================================================
 
 
-var express = require('express');
-var jade = require('pug');
-var bodyParser = require('body-parser');
-var request = require('request');
-var admin = require("firebase-admin");
+const express = require('express');
+const jade = require('pug');
+const bodyParser = require('body-parser');
+const request = require('request');
+const admin = require("firebase-admin");
+const cors = require('cors');
+const crypto = require('crypto');
+
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey("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");
+
+
+
 
 var serviceAccount = require("./gifty.json");
 
@@ -28,20 +36,13 @@ var app = express();
 // ========= SETUP EXPRESS ===================================================================
 
 app.locals.moment = require('moment');
+app.use(cors());
+app.options('*', cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/inc', express.static('inc'));
 app.set('view options', { pretty: true });
 app.set('view engine', 'jade');
-
-
-app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    next();
-});
-
 
 
 // ========= PRIMARY ROUTES ====================================================================
@@ -50,20 +51,31 @@ app.get('/', function (req, res){
     res.render('home', {});
 });
 
-app.get('/business/:path', function (req, res){ 
+// app.get('/business/:path', function (req, res){ 
     
+//     admin.firestore().collection("businesses").where('path', '==', req.params.path).get().then(snapshot => {
+//         if(snapshot.docs.length == 0){
+//             res.redirect('/');
+//         }else{
+//             res.render('business', {id : snapshot.docs[0].id, data : snapshot.docs[0].data()});
+//         }
+//     }).catch(err => {
+//         res.redirect('/');
+//     });
+
+// });
+
+
+app.all('/business/:path', function (req, res){ 
+    console.log({ amount : req.body.amount, name : req.body.recepient, email : req.body.email});
     admin.firestore().collection("businesses").where('path', '==', req.params.path).get().then(snapshot => {
         if(snapshot.docs.length == 0){
-            console.log("empty");
-            res.render('setup', {});
+            res.redirect('/');
         }else{
-            console.log("not empty");
-            res.render('business', {id : snapshot.docs[0].id, data : snapshot.docs[0].data()});
+            res.render('business', {id : snapshot.docs[0].id, data : snapshot.docs[0].data(), reignite : { amount : req.body.reigniteamount, name : req.body.reigniterecepient, email : req.body.reigniteemail} });
         }
-
     }).catch(err => {
-        console.log("empty");
-        res.render('setup', {});
+        res.redirect('/');
     });
 
 });
@@ -91,10 +103,20 @@ app.post('/create/card', function(req, res){
                                     res.send({error : true});
                                 }else{
                                     
-                                    var data = { card: CardReponse.token, sender: req.body.sender, business : req.body.business, recepient_name : req.body.recepient_name, recepient_email : req.body.recepient_email, amount : req.body.amount };
-                                    console.log(data);
+                                    var data = { card: CardReponse.token, sender: req.body.sender, business : req.body.business, recepient_name : req.body.recepient_name, recepient_email : req.body.recepient_email, amount : req.body.amount, id : crypto.randomBytes(64).toString('hex') + "-" + crypto.randomBytes(64).toString('hex') + "-" + crypto.randomBytes(64).toString('hex') };
+
                                     admin.firestore().collection('cards').add(data).then(ref => {
-                                        res.send({error : false})
+
+                                        const msg = {
+                                            to: 'aj@ajr.co',
+                                            from: 'aj@ajr.co',
+                                            subject: 'Someone just sent you a $20 Gift Card to XYZ',
+                                            html: "This is a sample message to test the email : <a href='http://localhost:6050/card/" + data.id+ "'>View Card</a>",
+                                        };
+
+                                        sgMail.send(msg);
+                                        res.send({error : false});
+
                                     });
 
                                 }
@@ -109,16 +131,28 @@ app.post('/create/card', function(req, res){
 
 });
 
-app.get('/card/:teset', function (req, res){ 
+app.get('/card/:id', function (req, res){ 
 
-    request('https://sandbox-api.marqeta.com/v3/cards/f5916fb3-953d-4d83-9d29-64ef99f618e6/showpan?show_cvv_number=true', { json: true, headers: { "Authorization" : "Basic OGZlNTIyNjctNGZlZi00OGE3LWJkMGQtODMwMDJlZDgxODA1OmZjZDg1Zjk0LTFlOTItNDgxYS05YTJmLWExYWJjNzgwMzI1NQ=="} }, function(Error, Request, Response) {
-        if(Error){
-            res.send({error : true});
+    admin.firestore().collection("cards").where('id', '==', req.params.id).get().then(snapshot => {
+        if(snapshot.docs.length == 0){
+            res.redirect('/');
         }else{
-            res.render('card', Response);
+            request('https://sandbox-api.marqeta.com/v3/cards/' + snapshot.docs[0].data().card + '/showpan?show_cvv_number=true', { json: true, headers: { "Authorization" : "Basic OGZlNTIyNjctNGZlZi00OGE3LWJkMGQtODMwMDJlZDgxODA1OmZjZDg1Zjk0LTFlOTItNDgxYS05YTJmLWExYWJjNzgwMzI1NQ=="} }, function(Error, Request, Response) {
+                if(Error){
+                    res.redirect('/');
+                }else{
+                    admin.firestore().collection("businesses").get(snapshot.docs[0].data().business).then(BusinessSnapshot => {
+                        res.render('card', { amount : snapshot.docs[0].data().amount, card : Response, business : BusinessSnapshot.docs[0].data()});
+                    });
+                }
+            });
         }
+    }).catch(err => {
+        res.redirect('/');
     });
+
 });
+
 
 // ========= SOCKET LISTEN ====================================================================
 
