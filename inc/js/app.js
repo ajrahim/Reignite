@@ -166,7 +166,7 @@ function GoogleLogin(){
         var token = result.credential.accessToken;
         var user = result.user;
         var uid = user.uid;
-        getdocument();
+        app.business.init();
 
 
     }).catch(function(error) {
