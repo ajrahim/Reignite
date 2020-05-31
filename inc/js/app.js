@@ -30,6 +30,11 @@ var app = {
                         website : "",
                         location : ""
                     }).then(function(docRef) {
+                        app.document.id = docRef.id;
+                        app.document.name = "";
+                        app.document.website = "";
+                        app.document.path = "";
+                        app.document.location = "";
                         setTimeout(function(){app.business.slide(1)}, 100);
                     }).catch(function(error) {
                     });
@@ -166,7 +171,10 @@ function GoogleLogin(){
         var token = result.credential.accessToken;
         var user = result.user;
         var uid = user.uid;
-        app.business.init();
+        console.log(user);
+        setTimeout(function(){
+            app.business.init();
+        }, 500);
 
 
     }).catch(function(error) {
