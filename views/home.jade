@@ -56,9 +56,9 @@ html
                                 .social-login#google(onclick='GoogleLogin();')
                                     span.fab.fa-google
                                     span Login with Google
-                                .social-login#apple(onclick='GoogleLogin();')
-                                    span.fab.fa-apple
-                                    span Login with Apple
+                                //- .social-login#apple(onclick='AppleLogin();')
+                                //-     span.fab.fa-apple
+                                //-     span Login with Apple
                 .home-slide(style='left: 100%')
                     .t
                         .tc
@@ -101,7 +101,7 @@ html
                                 h3.setup-label Almost there!
                                 h4.setup-sublabel All you have to do now is either share the link below or add the plugin to your site.
                                 .input-wrapper
-                                    .input-label Custom Page
+                                    .input-label Landing Page
                                     input(disabled).link
                                     button(onclick="app.copy();") Copy
                                 .input-label Plugin Code
@@ -116,7 +116,7 @@ html
                                             });
                                         &lt;/script&gt;
                                 .form-spacer
-                                a(href='').order
+                                a(href='', target="_blank").order
                                     span View Page
         script(src="inc/js/app.js")
         script.

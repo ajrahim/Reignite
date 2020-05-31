@@ -30,7 +30,7 @@ var app = {
                         website : "",
                         location : ""
                     }).then(function(docRef) {
-                        app.business.slide(2);
+                        setTimeout(function(){app.business.slide(1)}, 100);
                     }).catch(function(error) {
                     });
                 }else{
@@ -42,7 +42,7 @@ var app = {
                         app.document.path = doc.data().path;
                         app.document.location = doc.data().location;
                         app.display();
-                        app.business.slide(2);
+                        setTimeout(function(){app.business.slide(1)}, 100);
                     });
                 }
 
@@ -174,6 +174,23 @@ function GoogleLogin(){
         var email = error.email;
         var credential = error.credential;
 
+    });
+}
+
+
+function AppleLogin(){
+    var provider = new firebase.auth.OAuthProvider('apple.com');
+    firebase.auth().signInWithPopup(provider).then(function(result) {
+        var token = result.credential.accessToken;
+        var user = result.user;
+        var uid = user.uid;
+        getdocument();
+    })
+    .catch(function(error) {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        var email = error.email;
+        var credential = error.credential;
     });
 }
 

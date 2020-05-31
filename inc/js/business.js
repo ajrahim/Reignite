@@ -1,6 +1,6 @@
 var map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/ajrahim/ckaer8khj1pfm1ipglpttpcew'
+    style: 'mapbox://styles/ajrahim/ckaasapjh1c3g1ilgqzoyj4ps'
 });
 
 var business = {
