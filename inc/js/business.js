@@ -1,6 +1,6 @@
 var map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/ajrahim/ckaasapjh1c3g1ilgqzoyj4ps'
+    style: 'mapbox://styles/ajrahim/ckaer8khj1pfm1ipglpttpcew'
 });
 
 var business = {
@@ -39,9 +39,9 @@ var business = {
             amount: parseInt($(".recepient-amount").val())
         }, function( data ) {
             if(data.error){
-                alert("Please Try Again!");
+                swal("Oh no!", "We had a bit of trouble with the information provided. Please double check and try again.", "error");
             }else{
-                alert("Successfully Sent.");
+                swal("Sent!", "We successfully sent an email to " + $(".recepient-name").val() + "!", "success");
 
                 $(".recepient-name").val("");
                 $(".recepient-email").val("");
@@ -55,6 +55,31 @@ var business = {
             }
         });
         
+    },
+    
+    confirm : function(){
+        if($(".recepient-amount").val() !== "" && $(".recepient-amount").val() !== " " && $(".recepient-name").val() !== "" && $(".recepient-name").val() !== " " && $(".recepient-email").val() !== "" && $(".recepient-email").val() !== " "){
+            $(".order").removeClass("invalid");
+            $(".order span").html("Continue")
+            $(".order").attr("onclick", "business.continue();");
+            $(".order b").show();
+        }else{
+            $(".order").addClass("invalid");
+            $(".order span").html("Complete Form")
+            $(".order").attr("onclick", "");
+            $(".order b").hide();
+        }
+    },
+
+    continue : function(){
+
+        $(".recepient").hide();
+        $(".payment").show();
+        $(".order span").html("Send $" + $(".recepient-amount").val() + " Gift Card");
+        $(".order").attr("onclick", "business.purchase();");
+        $(".order b").removeClass(".fa-arrow-right");
+        $(".order b").addClass(".fa-paper-plane");
+
     },
 
     card : {

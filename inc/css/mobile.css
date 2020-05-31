@@ -31,5 +31,6 @@
     .banner h1 { font-size: 32px; margin-bottom: 50px; }
     .social-login { display: block; margin: 0px auto; }
         #google { margin-bottom: 10px; }
+        .hljs { width: 283px; }
     
 }

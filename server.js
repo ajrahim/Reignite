@@ -67,7 +67,6 @@ app.get('/', function (req, res){
 
 
 app.all('/business/:path', function (req, res){ 
-    console.log({ amount : req.body.amount, name : req.body.recepient, email : req.body.email});
     admin.firestore().collection("businesses").where('path', '==', req.params.path).get().then(snapshot => {
         if(snapshot.docs.length == 0){
             res.redirect('/');
@@ -141,8 +140,8 @@ app.get('/card/:id', function (req, res){
                 if(Error){
                     res.redirect('/');
                 }else{
-                    admin.firestore().collection("businesses").get(snapshot.docs[0].data().business).then(BusinessSnapshot => {
-                        res.render('card', { amount : snapshot.docs[0].data().amount, card : Response, business : BusinessSnapshot.docs[0].data()});
+                    admin.firestore().collection("businesses").doc(snapshot.docs[0].data().business).get().then(BusinessSnapshot => {
+                        res.render('card', { amount : snapshot.docs[0].data().amount, card : Response, business : BusinessSnapshot.data()});
                     });
                 }
             });

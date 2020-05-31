@@ -30,7 +30,7 @@ var app = {
                         website : "",
                         location : ""
                     }).then(function(docRef) {
-                        app.business.slide(1);
+                        app.business.slide(2);
                     }).catch(function(error) {
                     });
                 }else{
@@ -42,13 +42,29 @@ var app = {
                         app.document.path = doc.data().path;
                         app.document.location = doc.data().location;
                         app.display();
-                        app.business.slide(1);
+                        app.business.slide(2);
                     });
                 }
 
             }).catch(function(error) {
                 console.log("Error getting documents: ", error);
             });
+        },
+
+        confirm : function(){
+            if(app.document.name !== "" && app.document.name !== " " && app.document.path !== "" && app.document.path !== " " && app.document.website !== "" && app.document.website !== " " && app.document.location !== "" && app.document.location !== " ") {
+                $(".continue span").html("Continue");
+                $(".continue").removeClass("invalid");
+            }else{
+                $(".continue span").html("Complete Setup");
+                $(".continue").addClass("invalid");
+            }
+        },
+
+        continue : function(){
+            if(app.document.name !== "" && app.document.name !== " " && app.document.path !== "" && app.document.path !== " " && app.document.website !== "" && app.document.website !== " " && app.document.location !== "" && app.document.location !== " ") {
+                app.business.slide(2);
+            }
         },
 
         slide : function(index){
@@ -65,6 +81,10 @@ var app = {
         website : function(){
             app.document.website = $(".setup-website").val();
             app.business.update({website : app.document.website});
+        },
+        websitetext : function(){
+            app.document.website = $(".setup-website").val();
+            app.business.confirm();
         },
 
         location : function(){
@@ -119,11 +139,14 @@ var app = {
 
     display : function(){
         $(".setup-business").val(app.document.name);
-        $('.path').val(app.domain + app.document.path);
+        $('.path').val(app.domain + "business/" + app.document.path);
         $(".setup-website").val(app.document.website);
         $(".setup-location").val(app.document.location);
         $(".setup-logo-image").html("<img src='" + app.document.logo + "' />");
-        $(".link").val(app.domain + app.document.path);
+        $(".link").val(app.domain + "business/" + app.document.path);
+        $(".business-path").html(app.document.path);
+        $(".order").attr("href", app.domain + "business/" + app.document.path);
+        app.business.confirm();
     },
 
     copy : function(){

@@ -3,7 +3,7 @@
 .reignite-base { position: fixed; bottom: 30px; right: 30px; width: 80px; height: 80px; border-radius: 70px; background: #345AE3; z-index: 10; text-align: center; animation: rotation .6s;  animation-iteration-count: once; box-shadow: 0px 3px 10px rgba(0,0,0,.3); }
     .reignite-base-card { position: relative; width: calc(100% - 34px); top: 23px; }
     .reignite-selector { cursor: pointer; position: absolute; bottom: 0px; right: 0px; left: 0px; top: 0px; background: #eee; z-index: 2; opacity: 0; }
-    .reignite-menu { display: none; position: absolute; bottom: 90px; right: 0px; width: 500px; background: #f9f9f9; text-align: left; border-radius: 4px; }
+    .reignite-menu { display: none; position: absolute; bottom: 90px; right: 0px; width: 500px; background: #fff; text-align: left; border-radius: 10px; box-shadow: 0px 0px 16px rgba(0,0,0,0.1); }
         .reignite-menu-visible { display: block; }
         .reignite-menu-top { position: relative; width: 86%; height: 100px; margin: 0px auto; margin-top: 30px; margin-bottom: 0px; text-align: center; }
             .reignite-menu-top-title { display: block; position: relative; font-size: 30px; color: #345AE3; font-weight: 600; top: 5px; font-family: 'Open Sans'; }
@@ -32,4 +32,7 @@
     .reignite-base { width: 60px; height: 60px; right: 15px; bottom: 15px; }
     .reignite-base-card { top: 21px; }
     .reignite-menu { width: 320px; bottom: 70px; }
+    .reignite-menu-amounts { height: 50px; }
+        .reignite-amount-list-item { width: calc(16.5% - 2px); height: 40px; }
+            .reignite-amount-list-item span { font-size: 14px; top: 8px; }
 }
