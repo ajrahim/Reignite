@@ -64,6 +64,9 @@ var app = {
         continue : function(){
             if(app.document.name !== "" && app.document.name !== " " && app.document.path !== "" && app.document.path !== " " && app.document.website !== "" && app.document.website !== " " && app.document.location !== "" && app.document.location !== " ") {
                 app.business.slide(2);
+                $(".reignite-base").css("opacity", "1");
+                $(".reignite-base").hide();
+                $(".reignite-base").fadeIn();
             }
         },
 

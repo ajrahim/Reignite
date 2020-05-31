@@ -74,6 +74,7 @@ html, body { width: 100%; height: 100%; background: center center #D9E3EC; }
                 .input-icon { position: absolute; display: inline; font-size: 16px; top: 41px; left: 20px; color: #555; }
                 .input-wrapper input { border: 1px solid #ddd; font-size: 15px; padding: 15px 15px; width: calc(100% - 32px); color: #345AE3; transition: .3s; font-family: 'Barlow'; font-weight: 500; background: #fff; }
                     .input-wrapper-amount input { padding-left: 40px; width: calc(100% - 57px); -webkit-appearance: none; }
+                    .path { text-align: right; }
                     .input-wrapper input:disabled { color: #777; background: #eee;}
                     .input-wrapper input:focus { border-color: #345AE3; outline: none; background: rgb(244, 246, 250); }
                     .input-wrapper input::placeholder { color: #aaa; }
@@ -122,6 +123,6 @@ html, body { width: 100%; height: 100%; background: center center #D9E3EC; }
     #map { width: 100%; height: 100%; }
 
 
-
+.reignite-base { opacity: 0; }
 
 @keyframes rotation { 0% { transform: rotate(0deg); } 30% { transform: rotate(-5deg); } 60% { transform: rotate(5deg); } 100% { transform: rotate(0deg); } }
