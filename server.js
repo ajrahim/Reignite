@@ -17,7 +17,7 @@ const cors = require('cors');
 const crypto = require('crypto');
 
 const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey("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");
+sgMail.setApiKey("sendgridkey");
 
 
 
