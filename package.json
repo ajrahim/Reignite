@@ -17,6 +17,6 @@
     "mailgun-js": "^0.22.0",
     "moment": "^2.22.2",
     "pug": "^2.0.4",
-    "validator": "^10.4.0"
+    "validator": "^13.7.0"
   }
 }
